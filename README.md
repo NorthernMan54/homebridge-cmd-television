@@ -7,7 +7,7 @@
 3. scan for your Apple TV devices `atvremote scan`
 4. if your Apple TV is not using a fixed IP address, please take a moment and configure it to use a fixed IP address.
 5. authenticate pyatv with your Apple TV, and record the credential to a file `atvremote -s 192.168.1.10 --protocol companion pair`.  Please use the IP address of your Apple TV.
-2. install this plugin using: sudo npm i -g homebridge-cmd-television
+2. install this plugin using: sudo npm i -g https://github.com/NorthernMan54/homebridge-cmd-television
 3. configure accessory (See configuration sample)
 Thats it! Now when you turn the television on or switch the input to another source it will run the command set in the config.
 
