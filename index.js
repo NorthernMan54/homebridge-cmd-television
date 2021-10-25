@@ -1,6 +1,8 @@
 var request = require("request");
 var Service, Characteristic, VolumeCharacteristic;
-const { exec } = require('child_process');
+const {
+  exec
+} = require('child_process');
 
 const inputMap = {
   1: "Hdmi1",
@@ -24,8 +26,8 @@ function CmdTelevisionAccessory(log, config) {
   this.name = config["name"];
   this.oncmd = config["oncmd"];
   this.offcmd = config["offcmd"];
-  this.input1cmd = config["input1cmd"];
-  this.input2cmd = config["input2cmd"];
+  this.pausecmd = config["pausecmd"];
+  this.playcmd = config["playcmd"];
 
   this.enabledServices = [];
 
@@ -44,19 +46,27 @@ function CmdTelevisionAccessory(log, config) {
     .on("set", this.setPowerState.bind(this))
   this.tvService.setCharacteristic(Characteristic.ActiveIdentifier, 1);
 
+  //  this.tvService
+  //    .getCharacteristic(Characteristic.ActiveIdentifier)
+  //    .on("set", this.setInput.bind(this, inputMap));
+
   this.tvService
-    .getCharacteristic(Characteristic.ActiveIdentifier)
-    .on("set", this.setInput.bind(this, inputMap));
+    .getCharacteristic(Characteristic.RemoteKey)
+    .on("set", this.setKey.bind(this));
 
-  this.inputHDMI1Service = createInputSource("hdmi1", "HDMI 1", 1);
-  this.inputHDMI2Service = createInputSource("hdmi2", "HDMI 2", 2);
+    this.tvService
+      .getCharacteristic(Characteristic.TargetMediaState)
+      .on("set", this.setMedia.bind(this));
 
-  this.tvService.addLinkedService(this.inputHDMI1Service);
-  this.tvService.addLinkedService(this.inputHDMI2Service);
+  //  this.inputHDMI1Service = createInputSource("hdmi1", "HDMI 1", 1);
+  //  this.inputHDMI2Service = createInputSource("hdmi2", "HDMI 2", 2);
+
+  //  this.tvService.addLinkedService(this.inputHDMI1Service);
+  //  this.tvService.addLinkedService(this.inputHDMI2Service);
 
   this.enabledServices.push(this.tvService);
-  this.enabledServices.push(this.inputHDMI1Service);
-  this.enabledServices.push(this.inputHDMI2Service);
+  //  this.enabledServices.push(this.inputHDMI1Service);
+  //  this.enabledServices.push(this.inputHDMI2Service);
 }
 
 //set input
@@ -65,31 +75,70 @@ CmdTelevisionAccessory.prototype.setInput = function(map, newValue, callback) {
   if (!remoteAction) {
     callback(null);
   } else {
-      callback();
-      if (newValue == 1)
-            this.log("naar kanaal: 1");
-            exec(this.input1cmd);
-      if (newValue == 2)
-            this.log("naar kanaal: 2");
-            exec(this.input2cmd);
-    };
+    callback();
+    if (newValue == 1)
+      this.log("naar kanaal: 1");
+    exec(this.input1cmd);
+    if (newValue == 2)
+      this.log("naar kanaal: 2");
+    exec(this.input2cmd);
+  };
 }
+
+//set power status
+CmdTelevisionAccessory.prototype.setKey = function(state, callback) {
+  this.log("setKey", state);
+
+  switch (state) {
+/*    case Characteristic.RemoteKey.ARROW_UP:
+      yamaha.remoteCursor("Up");
+      break;
+    case Characteristic.RemoteKey.ARROW_DOWN:
+      yamaha.remoteCursor("Down");
+      break;
+    case Characteristic.RemoteKey.ARROW_RIGHT:
+      yamaha.remoteCursor("Right");
+      break;
+    case Characteristic.RemoteKey.ARROW_LEFT:
+      yamaha.remoteCursor("Left");
+      break;
+    case Characteristic.RemoteKey.SELECT:
+      yamaha.remoteCursor("Sel");
+      break;
+    case Characteristic.RemoteKey.BACK:
+      yamaha.remoteCursor("Return");
+      break;
+    case Characteristic.RemoteKey.INFORMATION:
+      yamaha.remoteMenu("On Screen");
+      break;
+*/
+    case Characteristic.RemoteKey.PLAY_PAUSE:
+      this.log("PLAY_PAUSE", state);
+      break;
+    default:
+  }
+  callback();
+};
+
+// set power status
+CmdTelevisionAccessory.prototype.setMedia = function(state, callback) {
+  this.log("setMedia", state);
+  callback();
+};
 
 //set power status
 CmdTelevisionAccessory.prototype.setPowerState = function(state, callback) {
   this.log.debug("state", state);
   if (state) {
-    	exec(this.oncmd);
-      this.log("aangezet");
-      callback();
-    ;
+    exec(this.oncmd);
+    this.log("oncmd");
+    callback();;
   } else {
     exec(this.offcmd);
-	  this.log("uitgezet");
-      callback();
-    };
-  }
-;
+    this.log("offcmd");
+    callback();
+  };
+};
 
 CmdTelevisionAccessory.prototype.getServices = function() {
   return this.enabledServices;

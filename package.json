@@ -27,6 +27,9 @@
   "engines": {
     "homebridge": ">=0.4.46"
   },
+  "dependencies": {
+    "request": "^x.x.x"
+  },
   "keywords": [
     "homebridge-plugin"
   ],

@@ -1,10 +1,14 @@
-# Homebridge television command plugin
+# Homebridge Apple TV command plugin, using pyatv to control your Apple TV
 
 ## Installation
 
 1. install homebridge
-2. install my plugin using: sudo npm i -g homebridge-cmd-television
-3. configure accesory (See configuration sample)
+2. install pyatv `pip install pyatv`
+3. scan for your Apple TV devices `atvremote scan`
+4. if your Apple TV is not using a fixed IP address, please take a moment and configure it to use a fixed IP address.
+5. authenticate pyatv with your Apple TV, and record the credential to a file `atvremote -s 192.168.1.10 --protocol companion pair`.  Please use the IP address of your Apple TV.
+2. install this plugin using: sudo npm i -g homebridge-cmd-television
+3. configure accessory (See configuration sample)
 Thats it! Now when you turn the television on or switch the input to another source it will run the command set in the config.
 
 ## Configuration
@@ -12,16 +16,14 @@ Thats it! Now when you turn the television on or switch the input to another sou
 Configuration sample:
 
  ```
-"accessories": [{
-{
-   			"accessory": "cmd-television",
-   			"name": "Televison",
-   			"oncmd": "bash tvon.sh", <- this is the command that gets executed by linux when you turn the tv on with you're phone.
-   			"offcmd": "bash tvoff.sh", <- this is the command that gets executed by linux when you turn the tv on with you're phone.
-   			"input1cmd": "bash tvhdmi1.sh", <- this is the command that gets executed by linux when you switch the source with you're phone.
-   			"input2cmd": "bash tvhdmi2.sh" <- this is the command that gets executed by linux when you switch the source with you're phone.
-}
-    ]
+"accessories": [
+  {
+    "accessory": "cmd-television",
+    "name": "Main Room TV",
+    "oncmd": "atvremote -s 192.168.1.10 --airplay-credentials `cat ~/atv.cred` turn_on",
+    "offcmd": "atvremote -s 192.168.1.10 --airplay-credentials `cat ~/atv.cred` turn_off",
+    "pausecmd": "atvremote -s 192.168.1.10 --airplay-credentials `cat ~/atv.cred` pause",
+    "playcmd": "atvremote -s 192.168.1.10 --airplay-credentials `cat ~/atv.cred` play"
+    }
+  ]
 ```
-
-Warning do not install using git clone and moving the folder to youre node_modules dir. This will break the plugin.
