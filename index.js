@@ -28,7 +28,8 @@ function CmdTelevisionAccessory(log, config) {
   this.offcmd = config["offcmd"];
   this.pausecmd = config["pausecmd"];
   this.playcmd = config["playcmd"];
-  this.playpausecmd = config["playpausecmd"];
+  this.powerstate = config["powerstate"];
+  //  this.playpausecmd = config["playpausecmd"];
 
   this.enabledServices = [];
 
@@ -45,6 +46,7 @@ function CmdTelevisionAccessory(log, config) {
   this.tvService
     .getCharacteristic(Characteristic.Active)
     .on("set", this.setPowerState.bind(this))
+    .on("get", this.getPowerState.bind(this))
   this.tvService.setCharacteristic(Characteristic.ActiveIdentifier, 1);
 
   //  this.tvService
@@ -143,7 +145,27 @@ CmdTelevisionAccessory.prototype.setPowerState = function(state, callback) {
     exec(this.offcmd);
     this.log("offcmd");
     callback();
-  };
+  }
+};
+
+CmdTelevisionAccessory.prototype.getPowerState = function(callback) {
+  this.log.debug("getPowerState");
+
+  exec(this.powerstate, (error, stdout, stderr) => {
+    if (error) {
+      this.log(`getPowerState error: ${error}`);
+      callback(error);
+    } else {
+    this.log.debug(`getPowerState: ${stdout}`);
+    // console.error(`stderr: ${stderr}`);
+    if (stdout.trim() === 'PowerState.On') {
+      this.log('Characteristic On', Characteristic.Active.ACTIVE);
+      callback(null, Characteristic.Active.ACTIVE);
+    } else {
+      this.log('Characteristic Off', Characteristic.Active.INACTIVE);
+      callback(null, Characteristic.Active.INACTIVE);
+    }}
+  });
 };
 
 CmdTelevisionAccessory.prototype.getServices = function() {
