@@ -28,6 +28,7 @@ function CmdTelevisionAccessory(log, config) {
   this.offcmd = config["offcmd"];
   this.pausecmd = config["pausecmd"];
   this.playcmd = config["playcmd"];
+  this.playpausecmd = config["playpausecmd"];
 
   this.enabledServices = [];
 
@@ -113,7 +114,9 @@ CmdTelevisionAccessory.prototype.setKey = function(state, callback) {
       break;
 */
     case Characteristic.RemoteKey.PLAY_PAUSE:
-      this.log("PLAY_PAUSE", state);
+      this.log("playpausecmd", state);
+      exec(this.playpausecmd);
+      callback();
       break;
     default:
   }
@@ -132,7 +135,7 @@ CmdTelevisionAccessory.prototype.setPowerState = function(state, callback) {
   if (state) {
     exec(this.oncmd);
     this.log("oncmd");
-    callback();;
+    callback();
   } else {
     exec(this.offcmd);
     this.log("offcmd");
