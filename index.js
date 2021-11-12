@@ -118,8 +118,8 @@ CmdTelevisionAccessory.prototype.setKey = function(state, callback) {
       exec(this.playcmd);
       break;
     case Characteristic.RemoteKey.PLAY_PAUSE:
-      this.log("playpausecmd", state);
-      exec(this.playpausecmd);
+      this.log("pausecmd", state);
+      exec(this.pausecmd);
       break;
     default:
   }
