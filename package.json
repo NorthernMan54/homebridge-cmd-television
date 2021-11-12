@@ -1,39 +1,22 @@
 {
-  "_from": "homebridge-cmd-television",
-  "_id": "homebridge-cmd-television@1.0.2",
-  "_inBundle": false,
-  "_integrity": "sha512-8r7Pg1JoQn6y2e+hjCwYFQg0KGdSqCqFFWPo0hINCtvKMz7mRF4D3+8VXsahUg0MAeCH+cILmZniFOP3N6KL2w==",
-  "_location": "/homebridge-cmd-television",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "homebridge-cmd-television",
-    "name": "homebridge-cmd-television",
-    "escapedName": "homebridge-cmd-television",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#USER"
-  ],
-  "_spec": "homebridge-cmd-television",
-  "_where": "/root",
   "author": {
-    "name": "Torac"
+    "name": "NorthernMan54"
   },
-  "description": "Control youre tv with commands.",
+  "description": "Apple TV Control Plugin for use with homebridge-alexa.",
   "engines": {
     "homebridge": ">=0.4.46"
   },
   "dependencies": {
-    "request": "^x.x.x"
+    "request": "^2.88.2"
   },
   "keywords": [
     "homebridge-plugin"
   ],
   "main": "index.js",
   "name": "homebridge-cmd-television",
-  "version": "1.0.2"
+  "version": "2.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NorthernMan54/homebridge-cmd-television.git"
+  }
 }
