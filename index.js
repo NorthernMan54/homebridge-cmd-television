@@ -28,7 +28,7 @@ function CmdTelevisionAccessory(log, config) {
   this.offcmd = config["offcmd"];
   this.pausecmd = config["pausecmd"];
   this.playcmd = config["playcmd"];
-  this.powerstate = config["powerstate"];
+  this.powerstatecmd = config["powerstatecmd"];
   //  this.playpausecmd = config["playpausecmd"];
 
   this.enabledServices = [];
@@ -161,7 +161,7 @@ CmdTelevisionAccessory.prototype.setPowerState = function(state, callback) {
 CmdTelevisionAccessory.prototype.getPowerState = function(callback) {
   this.log.debug("getPowerState");
 
-  exec(this.powerstate, (error, stdout, stderr) => {
+  exec(this.powerstatecmd, (error, stdout, stderr) => {
     if (error) {
       this.log(`getPowerState error: ${error}`);
       callback(error);
