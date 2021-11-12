@@ -55,9 +55,9 @@ function CmdTelevisionAccessory(log, config) {
     .getCharacteristic(Characteristic.RemoteKey)
     .on("set", this.setKey.bind(this));
 
-    this.tvService
-      .getCharacteristic(Characteristic.TargetMediaState)
-      .on("set", this.setMedia.bind(this));
+  this.tvService
+    .getCharacteristic(Characteristic.TargetMediaState)
+    .on("set", this.setMedia.bind(this));
 
   //  this.inputHDMI1Service = createInputSource("hdmi1", "HDMI 1", 1);
   //  this.inputHDMI2Service = createInputSource("hdmi2", "HDMI 2", 2);
@@ -91,32 +91,35 @@ CmdTelevisionAccessory.prototype.setKey = function(state, callback) {
   this.log("setKey", state);
 
   switch (state) {
-/*    case Characteristic.RemoteKey.ARROW_UP:
-      yamaha.remoteCursor("Up");
-      break;
-    case Characteristic.RemoteKey.ARROW_DOWN:
-      yamaha.remoteCursor("Down");
-      break;
-    case Characteristic.RemoteKey.ARROW_RIGHT:
-      yamaha.remoteCursor("Right");
-      break;
-    case Characteristic.RemoteKey.ARROW_LEFT:
-      yamaha.remoteCursor("Left");
-      break;
+    /*    case Characteristic.RemoteKey.ARROW_UP:
+          yamaha.remoteCursor("Up");
+          break;
+        case Characteristic.RemoteKey.ARROW_DOWN:
+          yamaha.remoteCursor("Down");
+          break;
+        case Characteristic.RemoteKey.ARROW_RIGHT:
+          yamaha.remoteCursor("Right");
+          break;
+        case Characteristic.RemoteKey.ARROW_LEFT:
+          yamaha.remoteCursor("Left");
+          break;
+        case Characteristic.RemoteKey.SELECT:
+          yamaha.remoteCursor("Sel");
+          break;
+        case Characteristic.RemoteKey.BACK:
+          yamaha.remoteCursor("Return");
+          break;
+        case Characteristic.RemoteKey.INFORMATION:
+          yamaha.remoteMenu("On Screen");
+          break;
+    */
     case Characteristic.RemoteKey.SELECT:
-      yamaha.remoteCursor("Sel");
+      this.log("playcmd", state);
+      exec(this.playcmd);
       break;
-    case Characteristic.RemoteKey.BACK:
-      yamaha.remoteCursor("Return");
-      break;
-    case Characteristic.RemoteKey.INFORMATION:
-      yamaha.remoteMenu("On Screen");
-      break;
-*/
     case Characteristic.RemoteKey.PLAY_PAUSE:
       this.log("playpausecmd", state);
       exec(this.playpausecmd);
-      callback();
       break;
     default:
   }
