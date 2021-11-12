@@ -3,7 +3,7 @@
 ## Installation
 
 1. install homebridge
-2. install pyatv `pip install pyatv`
+2. install pyatv `pip3 install pyatv`
 3. scan for your Apple TV devices `atvremote scan`
 4. if your Apple TV is not using a fixed IP address, please take a moment and configure it to use a fixed IP address.
 5. authenticate pyatv with your Apple TV, and record the credential to a file `atvremote -s 192.168.1.10 --protocol companion pair`.  Please use the IP address of your Apple TV.
@@ -21,9 +21,10 @@ Configuration sample:
     "accessory": "cmd-television",
     "name": "Main Room TV",
     "oncmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` turn_on",
-         "offcmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` turn_off; sleep 30; atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` turn_off",
+    "offcmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` turn_off; sleep 30; atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` turn_off",
     "pausecmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` pause",
-    "playcmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` play"
+    "playcmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` play",
+    "powerstate": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` power_state"
     }
   ]
 ```
