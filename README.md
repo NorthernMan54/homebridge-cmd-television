@@ -24,7 +24,7 @@ Configuration sample:
     "offcmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` turn_off; sleep 30; atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` turn_off",
     "pausecmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` pause",
     "playcmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` play",
-    "powerstate": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` power_state"
+    "powerstatecmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` power_state"
     }
   ]
 ```
