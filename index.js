@@ -61,6 +61,15 @@ function CmdTelevisionAccessory(log, config) {
     .getCharacteristic(Characteristic.TargetMediaState)
     .on("set", this.setMedia.bind(this));
 
+  this.informationService = new Service.AccessoryInformation();
+
+  this.informationService
+    .setCharacteristic(Characteristic.Manufacturer, "NorthernMan54")
+    .setCharacteristic(Characteristic.Model, "homebridge-cmd-television")
+    .setCharacteristic(Characteristic.FirmwareRevision, require('./package.json').version);
+
+  this.enabledServices.push(this.informationService);
+
   //  this.inputHDMI1Service = createInputSource("hdmi1", "HDMI 1", 1);
   //  this.inputHDMI2Service = createInputSource("hdmi2", "HDMI 2", 2);
 
@@ -68,11 +77,12 @@ function CmdTelevisionAccessory(log, config) {
   //  this.tvService.addLinkedService(this.inputHDMI2Service);
 
   this.enabledServices.push(this.tvService);
+
   //  this.enabledServices.push(this.inputHDMI1Service);
   //  this.enabledServices.push(this.inputHDMI2Service);
 }
 
-//set input
+// set input
 CmdTelevisionAccessory.prototype.setInput = function(map, newValue, callback) {
   const remoteAction = map[newValue];
   if (!remoteAction) {
@@ -156,15 +166,16 @@ CmdTelevisionAccessory.prototype.getPowerState = function(callback) {
       this.log(`getPowerState error: ${error}`);
       callback(error);
     } else {
-    this.log.debug(`getPowerState: ${stdout}`);
-    // console.error(`stderr: ${stderr}`);
-    if (stdout.trim() === 'PowerState.On') {
-      this.log('Characteristic On', Characteristic.Active.ACTIVE);
-      callback(null, Characteristic.Active.ACTIVE);
-    } else {
-      this.log('Characteristic Off', Characteristic.Active.INACTIVE);
-      callback(null, Characteristic.Active.INACTIVE);
-    }}
+      this.log.debug(`getPowerState: ${stdout}`);
+      // console.error(`stderr: ${stderr}`);
+      if (stdout.trim() === 'PowerState.On') {
+        this.log('Characteristic On', Characteristic.Active.ACTIVE);
+        callback(null, Characteristic.Active.ACTIVE);
+      } else {
+        this.log('Characteristic Off', Characteristic.Active.INACTIVE);
+        callback(null, Characteristic.Active.INACTIVE);
+      }
+    }
   });
 };
 
