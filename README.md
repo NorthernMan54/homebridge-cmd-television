@@ -28,3 +28,32 @@ Configuration sample:
     }
   ]
 ```
+
+## Installing in Homebridge Synology docker container
+
+I'm running the Homebridge Synology docker container, and can offer a few tips to those doing the same. (One is that you can launch a Terminal in the container from the Homebridge UI!)
+
+But first, if anyone has issues where the "npm i" command to install the plugin from git insists on using ssh, despite git configuration overrides, this solved my issue; it no longer insisted on using ssh for cloning.
+
+```
+npm config set ssl-strict=false
+```
+
+As for the rest of it, here are the commands I ran. (I assume you can combine apk packages into one command)
+# Ran inside the homebridge container on the synology (via web console)
+
+```
+apk add gcc openssh python3-dev rust
+pip3 install --upgrade pip
+# pip3 install wheel ## can't recall if this was required or not
+pip3 install cryptography
+pip3 install pyatv
+atvremote scan
+atvremote -s --protocol companion pair
+npm config set ssl-strict=false
+npm i -g https://github.com/NorthernMan54/homebridge-cmd-television
+```
+
+I am experiencing a strange error where my TV turns on ~30 seconds after I turn it off sometimes, but I don't see anything in the Homebridge debug logs, so I will assume it's something else for the moment!
+
+Tks to @justinmm2
