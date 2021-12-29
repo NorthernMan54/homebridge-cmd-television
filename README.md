@@ -2,13 +2,13 @@
 
 ## Installation
 
-1. install homebridge
-2. install pyatv `pip3 install pyatv`
-3. scan for your Apple TV devices `atvremote scan`
-4. if your Apple TV is not using a fixed IP address, please take a moment and configure it to use a fixed IP address.
-5. authenticate pyatv with your Apple TV, and record the credential to a file `atvremote -s 192.168.1.10 --protocol companion pair`.  Please use the IP address of your Apple TV.
-6. install this plugin using: sudo npm i -g https://github.com/NorthernMan54/homebridge-cmd-television
-7. configure accessory (See configuration sample)
+1. Install homebridge
+2. Install pyatv `pip3 install pyatv`
+3. Scan for your Apple TV devices `atvremote scan`
+4. Authenticate pyatv with your Apple TV, and record the companion credential to a file `atvremote -s 192.168.1.10 --protocol companion pair`.  Please use the IP address of your Apple TV, and put the output into this file ~/.homebridge/atv_companion.cred
+5. Authenticate pyatv with your Apple TV, and record the airplay credential to a file `atvremote -s 192.168.1.10 --protocol airplay pair`.  Please use the IP address of your Apple TV, and put the output into this file ~/.homebridge/atv_airplay.cred
+6. Install this plugin using: sudo npm i -g https://github.com/NorthernMan54/homebridge-cmd-television
+7. Configure accessory (See configuration sample)
 Thats it! Now when you turn the television on or switch the input to another source it will run the command set in the config.
 
 ## Configuration
@@ -20,13 +20,13 @@ Configuration sample:
   {
     "accessory": "cmd-television",
     "name": "Main Room TV",
-    "oncmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` turn_on",
-    "offcmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` turn_off; sleep 30; atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` turn_off",
-    "pausecmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` pause",
-    "playcmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` play",
-    "powerstatecmd": "atvremote -s 192.168.1.27 --airplay-credentials `cat ~/atv.cred` power_state"
-    }
-  ]
+    "oncmd": "atvremote --id 08:66:98:D4:CF:79 --airplay-credentials `cat ~/.homebridge/atv_airplay.cred` --companion-credentials `cat ~/.homebridge/atv_companion.cred` turn_on",
+    "offcmd": "atvremote --id 08:66:98:D4:CF:79 --airplay-credentials `cat ~/.homebridge/atv_airplay.cred` --companion-credentials `cat ~/.homebridge/atv_companion.cred` turn_off",
+    "pausecmd": "atvremote --id 08:66:98:D4:CF:79 --airplay-credentials `cat ~/.homebridge/atv_airplay.cred` --companion-credentials `cat ~/.homebridge/atv_companion.cred` pause",
+    "playcmd": "atvremote --id 08:66:98:D4:CF:79 --airplay-credentials `cat ~/.homebridge/atv_airplay.cred` --companion-credentials `cat ~/.homebridge/atv_companion.cred` play",
+    "powerstatecmd": "atvremote --id 08:66:98:D4:CF:79 --airplay-credentials `cat ~/.homebridge/atv_airplay.cred` --companion-credentials `cat ~/.homebridge/atv_companion.cred` power_state"
+  }
+]
 ```
 
 ## Installing in Homebridge Synology docker container
