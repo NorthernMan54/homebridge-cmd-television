@@ -30,31 +30,33 @@ Configuration sample:
 ]
 ```
 
-## Installing in Homebridge Synology docker container
+## Using with a Synology Docker Installation
 
-I'm running the Homebridge Synology docker container, and can offer a few tips to those doing the same. (One is that you can launch a Terminal in the container from the Homebridge UI!)
+Homebridge can be installed on Synology NAS devices, via a Docker container.
 
-But first, if anyone has issues where the "npm i" command to install the plugin from git insists on using ssh, despite git configuration overrides, this solved my issue; it no longer insisted on using ssh for cloning.
+When using this plugin with a Synology installation, installation requires additional and altered steps.
+
+Notably, the Synology container only persists the /homebridge path. In order for this plugin to persist across container restarts, it and its dependencies will need to be installed to this path. In turn, two items in the default container configuration must also be changed.
+
+
+## Altered Synology Installation Instructions
+
+First, stop the Homebridge container on the Synology if it is already running. Launch the "Docker" application, and switch to the "Container" page. Power off the container.
+
+Once stopped, edit the Homebridge container. Switch to the "Environment" tab. Modify the "PATH" variable to append an aditional directory at the end: /homebridge/python/bin. Then, add a new variable: "PYTHONPATH"; its value should be /homebridge/python. Power the container on again.
+
+Once the container is running, navigate and log in to the Homebridge UI. Launch a Homebridge Terminal from the upper-right drop-down menu. Then, run the following commands:
 
 ```
-npm config set ssl-strict=false
-```
-
-As for the rest of it, here are the commands I ran. (I assume you can combine apk packages into one command)
-# Ran inside the homebridge container on the synology (via web console)
-
-```
+mkdir /homebridge/python
 apk add gcc openssh python3-dev rust
 pip3 install --upgrade pip
-# pip3 install wheel ## can't recall if this was required or not
-pip3 install cryptography
-pip3 install pyatv
-atvremote scan
-atvremote -s --protocol companion pair
+pip3 install --target /homebridge/python cryptography
+pip3 install --target /homebridge/python pyatv
 npm config set ssl-strict=false
-npm i -g https://github.com/NorthernMan54/homebridge-cmd-television
+npm i --prefix /homebridge https://github.com/NorthernMan54/homebridge-cmd-television
 ```
 
-I am experiencing a strange error where my TV turns on ~30 seconds after I turn it off sometimes, but I don't see anything in the Homebridge debug logs, so I will assume it's something else for the moment!
+Voila! homebridge-cmd-television and its dependencies are now installed in /homebridge, and should persist through container restarts.
 
-Tks to @justinmm2
+**You can now create a configuration and credentials file by following the instructions in the "Installation" section above**. Make sure they are placed inside /homebridge.
